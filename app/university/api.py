@@ -1,8 +1,9 @@
-from fastapi import status, APIRouter, Depends, HTTPException
+from fastapi import status, APIRouter, Depends
 from sqlalchemy.orm import Session
 from app import dependencies as global_dependencies
+from app.university import selectors
 
-from . import schemas, services, validators
+from . import schemas, services
 from app.config import database
 
 database.DBBase.metadata.create_all(bind=database.engine)
@@ -18,3 +19,8 @@ def create_university(
     db: Session = Depends(global_dependencies.get_db),
 ):
     return services.create_university(db=db, university=university)
+
+
+@router.get("/{abbrev}", response_model=schemas.University)
+def get_university(abbrev: str, db: Session = Depends(global_dependencies.get_db)):
+    return selectors.get_university(db=db, abbrev=abbrev)

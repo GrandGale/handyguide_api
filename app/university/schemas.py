@@ -1,8 +1,8 @@
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Extra, Field
 
 
-class BaseUniversity(BaseModel):
+class UniversityCreate(BaseModel):
     name: str = Field(
         description="Name of the university",
         max_length=100,
@@ -13,12 +13,16 @@ class BaseUniversity(BaseModel):
     )
 
 
-class UniversityCreate(BaseUniversity):
-    pass
-
-
-class University(BaseUniversity):
+class University(BaseModel):
     id: int = Field(description="Unique identifier for the university")
+    name: str = Field(
+        description="Name of the university",
+        max_length=100,
+    )
+    abbrev: str = Field(
+        description="Abbreviation of the university",
+        max_length=10,
+    )
 
     class Config:
         orm_mode = True
