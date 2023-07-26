@@ -21,6 +21,11 @@ def create_university(
     return services.create_university(db=db, university=university)
 
 
+@router.get("/", response_model=list[schemas.University])
+def get_university_list(db: Session = Depends(global_dependencies.get_db)):
+    return selectors.get_university_list(db=db)
+
+
 @router.get("/{abbrev}", response_model=schemas.University)
 def get_university(abbrev: str, db: Session = Depends(global_dependencies.get_db)):
     return selectors.get_university(db=db, abbrev=abbrev)

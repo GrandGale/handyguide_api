@@ -1,9 +1,15 @@
+from typing import List
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.university import schemas
 
 from . import models
+
+
+def get_university_list(db: Session):
+    objs: List[models.University] = db.query(models.University).all()
+    return objs
 
 
 def get_university(db: Session, abbrev: str):
