@@ -12,3 +12,11 @@ def get_faculty_list(university: str, db: Session = Depends(get_db)):
     )
     print(objs)
     return objs
+
+
+def get_faculty(university: str, faculty: str, db: Session = Depends(get_db)):
+    return (
+        db.query(models.Faculty)
+        .filter_by(university=university, abbrev=faculty)
+        .first()
+    )
