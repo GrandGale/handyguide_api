@@ -1,5 +1,4 @@
-from datetime import datetime
-from pydantic import BaseModel, Extra, Field
+from pydantic import BaseModel, Field
 
 
 class BaseUniversity(BaseModel):
