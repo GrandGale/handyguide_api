@@ -6,7 +6,7 @@ from app.dependencies import get_db
 from . import schemas, models
 
 
-def faculty_is_valid(university: str, faculty: str, db: Session = Depends(get_db)):
+def faculty_is_valid(university: str, faculty: str, db: Session):
     if (
         db.query(models.Faculty)
         .filter_by(university=university, abbrev=faculty)
@@ -18,7 +18,11 @@ def faculty_is_valid(university: str, faculty: str, db: Session = Depends(get_db
     )
 
 
-def validate_faculty(db: Session, faculty: schemas.FacultyCreate, university: str):
+def validate_faculty(
+    university: str,
+    faculty: schemas.FacultyCreate,
+    db: Session,
+):
     if (
         db.query(models.Faculty)
         .filter_by(
