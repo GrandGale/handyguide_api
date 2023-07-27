@@ -2,10 +2,10 @@ from typing import List
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
+from app.dependencies import get_db
 from app.course import schemas, services, selectors
 from app.course.validators import course_is_valid
 from app.department.validators import department_is_valid
-from app.dependencies import get_db
 from app.faculty.validators import faculty_is_valid
 from app.university.validators import university_is_valid
 
