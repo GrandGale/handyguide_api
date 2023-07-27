@@ -15,7 +15,6 @@ class BaseCourse(BaseModel):
 class CourseCreate(BaseCourse):
     department: str
     faculty: str
-    university: str
 
 
 class Course(BaseCourse):
