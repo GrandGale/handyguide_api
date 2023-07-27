@@ -9,7 +9,7 @@ from . import models
 def create_department(
     university: str,
     department: schemas.DepartmentCreate,
-    db: Session = Depends(get_db),
+    db: Session,
 ):
     validate_department(university=university, department=department, db=db)
     obj = models.Department(university=university, **department.model_dump())
