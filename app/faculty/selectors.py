@@ -7,9 +7,7 @@ from . import models
 
 
 def get_faculty_list(university: str, db: Session):
-    objs: List[models.Faculty] = (
-        db.query(models.Faculty).filter_by(university=university).all()
-    )
+    objs = db.query(models.Faculty).filter_by(university=university).all()
     return objs
 
 

@@ -6,15 +6,13 @@ from . import models
 
 def get_department_list(university: str, faculty_abbrev: str | None, db: Session):
     if faculty_abbrev:
-        objs: List[models.Department] = (
+        objs = (
             db.query(models.Department)
             .filter_by(university=university, faculty=faculty_abbrev)
             .all()
         )
     else:
-        objs: List[models.Department] = (
-            db.query(models.Department).filter_by(university=university).all()
-        )
+        objs = db.query(models.Department).filter_by(university=university).all()
     return objs
 
 
