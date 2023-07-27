@@ -13,6 +13,6 @@ class Department(DBBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100))
     abbrev = Column(String(10), index=True)
-    university = Column(String, ForeignKey(University.abbrev))
     faculty = Column(String, ForeignKey(Faculty.abbrev))
+    university = Column(String, ForeignKey(University.abbrev))
     UniqueConstraint(name, university, abbrev, name="unique_department")
