@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from app.course import schemas, services, selectors
+from app.course.validators import course_is_valid
 from app.department.validators import department_is_valid
 from app.dependencies import get_db
 from app.faculty.validators import faculty_is_valid
@@ -44,3 +45,12 @@ def get_course_list(
         department_abbrev=department,
         db=db,
     )
+
+
+@router.get(
+    "/{course}", status_code=status.HTTP_200_OK, response_model=schemas.CourseDetail
+)
+def get_course(university: str, course: str, db: Session = Depends(get_db)):
+    university_is_valid(university_abbrev=university, db=db)
+    course_is_valid(university=university, course_code=course, db=db)
+    return selectors.get_course(university=university, course_code=course, db=db)

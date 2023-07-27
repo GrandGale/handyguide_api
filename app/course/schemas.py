@@ -19,3 +19,9 @@ class CourseCreate(BaseCourse):
 
 class Course(BaseCourse):
     university: str
+
+
+class CourseDetail(BaseCourse):
+    department: str
+    faculty: str
+    university: str

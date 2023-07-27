@@ -19,3 +19,11 @@ def get_course_list(
         qs = qs.filter_by(department=department_abbrev)
 
     return qs.all()
+
+
+def get_course(university: str, course_code: str, db: Session):
+    return (
+        db.query(models.Course)
+        .filter_by(university=university, code=course_code)
+        .first()
+    )
