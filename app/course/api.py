@@ -1,7 +1,8 @@
+from typing import List
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.course import schemas, services
+from app.course import schemas, services, selectors
 from app.department.validators import department_is_valid
 from app.dependencies import get_db
 from app.faculty.validators import faculty_is_valid
@@ -25,3 +26,21 @@ def create_course(
         university=university, department_abbrev=course.department, db=db
     )
     return services.create_course(university=university, course=course, db=db)
+
+
+@router.get("/", status_code=status.HTTP_200_OK, response_model=List[schemas.Course])
+def get_course_list(
+    university: str,
+    faculty: str | None = None,
+    department: str | None = None,
+    db: Session = Depends(get_db),
+):
+    university_is_valid(university_abbrev=university, db=db)
+    faculty_is_valid(university=university, faculty_abbrev=faculty, db=db)
+    department_is_valid(university=university, department_abbrev=department, db=db)
+    return selectors.get_course_list(
+        university=university,
+        faculty_abbrev=faculty,
+        department_abbrev=department,
+        db=db,
+    )
