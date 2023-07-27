@@ -6,7 +6,9 @@ from app.department import schemas
 from . import models, schemas
 
 
-def department_is_valid(university: str, department_abbrev: str, db: Session):
+def department_is_valid(university: str, department_abbrev: str | None, db: Session):
+    if department_abbrev == None:
+        return True
     if (
         db.query(models.Department)
         .filter_by(university=university, abbrev=department_abbrev)
