@@ -8,14 +8,11 @@ from . import models
 
 def create_department(
     university: str,
-    faculty: str,
     department: schemas.DepartmentCreate,
     db: Session = Depends(get_db),
 ):
     validate_department(university=university, department=department, db=db)
-    obj = models.Department(
-        university=university, faculty=faculty, **department.model_dump()
-    )
+    obj = models.Department(university=university, **department.model_dump())
     db.add(obj)
     db.commit()
     db.refresh(obj)

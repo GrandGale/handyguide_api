@@ -13,7 +13,7 @@ class DepartmentBase(BaseModel):
 
 
 class DepartmentCreate(DepartmentBase):
-    pass
+    faculty: str
 
 
 class Department(DepartmentBase):

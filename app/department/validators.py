@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from sqlalchemy import or_, and_
 from sqlalchemy.orm import Session
 
 from app.department import schemas
@@ -22,10 +23,19 @@ def validate_department(
 ):
     if (
         db.query(models.Department)
-        .filter_by(university=university, **department.model_dump())
+        .filter_by(name=department.name, university=university)
         .first()
     ):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="Department Already Exists"
+        )
+    elif (
+        db.query(models.Department)
+        .filter_by(abbrev=department.abbrev, university=university)
+        .first()
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Department with Abbreviation already Exists",
         )
     return True

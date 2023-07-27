@@ -6,13 +6,15 @@ from app.dependencies import get_db
 from . import schemas, models
 
 
-def faculty_is_valid(university: str, faculty: str, db: Session):
-    if (
+def faculty_is_valid(university: str, faculty_abbrev: str | None, db: Session):
+    if faculty_abbrev == None:
+        return None
+    elif (
         db.query(models.Faculty)
-        .filter_by(university=university, abbrev=faculty)
+        .filter_by(abbrev=faculty_abbrev, university=university)
         .first()
     ):
-        return faculty
+        return faculty_abbrev
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="Faculty does not exist"
     )
@@ -27,12 +29,20 @@ def validate_faculty(
         db.query(models.Faculty)
         .filter_by(
             name=faculty.name,
-            abbrev=faculty.abbrev,
             university=university,
         )
         .first()
     ):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="Faculty Already Exists"
+        )
+    elif (
+        db.query(models.Faculty)
+        .filter_by(abbrev=faculty.abbrev, university=university)
+        .first()
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Faculty with Abbrev already Exists",
         )
     return True

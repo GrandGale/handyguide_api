@@ -18,23 +18,25 @@ router = APIRouter()
 )
 def create_department(
     university: str,
-    faculty: str,
     department: schemas.DepartmentCreate,
     db: Session = Depends(get_db),
 ):
     university_is_valid(university=university, db=db)
-    faculty_is_valid(university=university, faculty=faculty, db=db)
+    faculty_is_valid(university=university, faculty_abbrev=department.faculty, db=db)
     return services.create_department(
-        university=university, faculty=faculty, department=department, db=db
+        university=university, department=department, db=db
     )
 
 
+# Not Needed so far
 @router.get(
     "/", status_code=status.HTTP_200_OK, response_model=List[schemas.Department]
 )
 def get_faculty_department_list(
-    university: str, faculty: str, db: Session = Depends(get_db)
+    university: str, faculty: str | None = None, db: Session = Depends(get_db)
 ):
     university_is_valid(university=university, db=db)
-    faculty_is_valid(university=university, faculty=faculty, db=db)
-    return selectors.get_department_list(university=university, faculty=faculty, db=db)
+    faculty_is_valid(university=university, faculty_abbrev=faculty, db=db)
+    return selectors.get_department_list(
+        university=university, faculty_abbrev=faculty, db=db
+    )

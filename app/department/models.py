@@ -15,4 +15,4 @@ class Department(DBBase):
     abbrev = Column(String(10), index=True)
     university = Column(String, ForeignKey(University.abbrev))
     faculty = Column(String, ForeignKey(Faculty.abbrev))
-    UniqueConstraint(name, university, name="unique_department")
+    UniqueConstraint(name, university, abbrev, name="unique_department")
