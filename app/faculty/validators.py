@@ -1,9 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.dependencies import get_db
-
-from . import schemas, models
+from app.faculty import schemas, models
 
 
 def faculty_is_valid(university: str, faculty_abbrev: str | None, db: Session):

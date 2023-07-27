@@ -1,11 +1,10 @@
 from sqlalchemy.orm import Session
 
+from app.faculty import schemas, models
 from app.faculty.validators import validate_faculty
 
-from . import schemas, models
 
-
-def create_faculty(db: Session, university: str, faculty: schemas.FacultyCreate):
+def create_faculty(university: str, faculty: schemas.FacultyCreate, db: Session):
     """This function creates a faculty in the database.
 
     Args:
@@ -19,7 +18,7 @@ def create_faculty(db: Session, university: str, faculty: schemas.FacultyCreate)
     Returns:
         models.Faculty: The created faculty.
     """
-    validate_faculty(db=db, faculty=faculty, university=university)
+    validate_faculty(university=university, faculty=faculty, db=db)
     obj = models.Faculty(**faculty.model_dump(), university=university)
     db.add(obj)
     db.commit()

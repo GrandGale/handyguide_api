@@ -1,9 +1,6 @@
-from typing import List
-from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from app.dependencies import get_db
-from . import models
+from app.faculty import models
 
 
 def get_faculty_list(university: str, db: Session):
