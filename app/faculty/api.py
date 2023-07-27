@@ -24,7 +24,7 @@ def create_faculty(
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[schemas.Faculty])
 def get_faculty_list(university: str, db: Session = Depends(get_db)):
-    university_is_valid(db=db, university=university)
+    university_is_valid(university_abbrev=university, db=db)
     return selectors.get_faculty_list(db=db, university=university)
 
 

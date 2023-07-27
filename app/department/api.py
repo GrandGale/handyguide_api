@@ -22,7 +22,7 @@ def create_department(
     department: schemas.DepartmentCreate,
     db: Session = Depends(get_db),
 ):
-    university_is_valid(university=university, db=db)
+    university_is_valid(university_abbrev=university, db=db)
     faculty_is_valid(university=university, faculty_abbrev=department.faculty, db=db)
     return services.create_department(
         university=university, department=department, db=db
@@ -36,7 +36,7 @@ def create_department(
 def get_department_list(
     university: str, faculty: str | None = None, db: Session = Depends(get_db)
 ):
-    university_is_valid(university=university, db=db)
+    university_is_valid(university_abbrev=university, db=db)
     faculty_is_valid(university=university, faculty_abbrev=faculty, db=db)
     return selectors.get_department_list(
         university=university, faculty_abbrev=faculty, db=db
@@ -48,7 +48,7 @@ def get_department_list(
 )
 def get_department(university: str, department: str, db: Session = Depends(get_db)):
     print(department)
-    university_is_valid(university=university, db=db)
+    university_is_valid(university_abbrev=university, db=db)
     department_is_valid(university=university, department_abbrev=department, db=db)
     return selectors.get_department(
         university=university, department_abbrev=department, db=db
