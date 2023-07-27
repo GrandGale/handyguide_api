@@ -10,7 +10,6 @@ def get_faculty_list(university: str, db: Session = Depends(get_db)):
     objs: List[models.Faculty] = (
         db.query(models.Faculty).filter_by(university=university).all()
     )
-    print(objs)
     return objs
 
 

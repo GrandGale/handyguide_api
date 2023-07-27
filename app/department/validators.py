@@ -2,7 +2,19 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.department import schemas
-from . import models
+from . import models, schemas
+
+
+def department_is_valid(university: str, department: str, db: Session):
+    if (
+        db.query(models.Department)
+        .filter_by(university=university, abbrev=department)
+        .first()
+    ):
+        return department
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND, detail="Department not Found"
+    )
 
 
 def validate_department(
