@@ -1,7 +1,6 @@
-from typing import List
 from sqlalchemy.orm import Session
 
-from . import models
+from app.department import models
 
 
 def get_department_list(university: str, faculty_abbrev: str | None, db: Session):

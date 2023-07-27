@@ -1,9 +1,9 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from app.department import schemas
-from app.department.validators import validate_department
+
 from app.dependencies import get_db
-from . import models
+from app.department import schemas, models
+from app.department.validators import validate_department
 
 
 def create_department(

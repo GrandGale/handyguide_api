@@ -1,9 +1,7 @@
-from fastapi import HTTPException, status
-from sqlalchemy import or_, and_
+from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 
-from app.department import schemas
-from . import models, schemas
+from app.department import schemas, models
 
 
 def department_is_valid(university: str, department_abbrev: str | None, db: Session):

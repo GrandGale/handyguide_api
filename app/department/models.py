@@ -1,7 +1,6 @@
-from datetime import datetime
 from sqlalchemy import Column, ForeignKey, String, Integer, UniqueConstraint
-from app.faculty.models import Faculty
 
+from app.faculty.models import Faculty
 from app.university.models import University
 
 from ..config.database import DBBase
