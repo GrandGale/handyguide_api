@@ -10,6 +10,7 @@ app = FastAPI()
 
 
 app.include_router(university_router, prefix="/university", tags=["university"])
+app.include_router(level_router, prefix="/level", tags=["level"])
 app.include_router(
     faculty_router, prefix="/university/{university}/faculty", tags=["faculty"]
 )
@@ -18,5 +19,4 @@ app.include_router(
     prefix="/university/{university}/department",
     tags=["department"],
 )
-app.include_router(level_router, prefix="/level", tags=["level"])
 app.include_router(course_router, prefix="/university/{university}/course")
