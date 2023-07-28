@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from . import schemas, models
+from app.university import schemas, models
 
 
 def create_university(db: Session, university: schemas.UniversityCreate):

@@ -2,8 +2,7 @@ from fastapi import HTTPException, status, Depends
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
-
-from . import schemas, models
+from app.university import models
 
 
 def university_is_valid(university_abbrev: str, db: Session = Depends(get_db)):

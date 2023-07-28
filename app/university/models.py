@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime
 
-from ..config.database import DBBase
+from app.config.database import DBBase
 
 
 class University(DBBase):

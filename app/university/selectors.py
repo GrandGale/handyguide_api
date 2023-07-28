@@ -2,7 +2,7 @@ from typing import List
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from . import models
+from app.university import models
 
 
 def get_university_list(db: Session):
@@ -18,12 +18,12 @@ def get_university_list(db: Session):
     return objs
 
 
-def get_university(db: Session, abbrev: str):
+def get_university(university_abbrev: str, db: Session):
     """This function returns a university from the database.
 
     Args:
+        universirty_abbrev (str): The abbreviation of the university to return.
         db (Session): The database session.
-        abbrev (str): The abbreviation of the university to return.
 
     Raises:
         HTTPException[404]: If the university is not found.
@@ -32,7 +32,7 @@ def get_university(db: Session, abbrev: str):
         models.University: The university obj from the database.
     """
     obj: models.University | None = (
-        db.query(models.University).filter(models.University.abbrev == abbrev).first()
+        db.query(models.University).filter_by(abbrev=university_abbrev).first()
     )
     if obj:
         return obj
