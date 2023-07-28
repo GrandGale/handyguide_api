@@ -10,6 +10,7 @@ class BaseCourse(BaseModel):
         description="Abbreviation of the faculty",
         max_length=10,
     )
+    level: str = Field(description="The level of the course", max_length=10)
 
 
 class CourseCreate(BaseCourse):

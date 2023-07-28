@@ -4,7 +4,8 @@ from app.course import models
 
 
 def get_course_list(
-    university: str,
+    level: str | None,
+    university: str | None,
     faculty_abbrev: str | None,
     department_abbrev: str | None,
     db: Session,
@@ -12,7 +13,8 @@ def get_course_list(
     """This Function returns a list of courses from a faculty, department or university
 
     Args:
-        university (str): The university abbrev
+        level (str | None): The level abbrev
+        university (str | None): The university abbrev
         faculty_abbrev (str | None): The faculty abbrev
         department_abbrev (str | None): The department abbrev
         db (Session): The DB Session created
@@ -20,7 +22,12 @@ def get_course_list(
     Returns:
         List[models.Course]: The List of courses that satisfy the criteria specified
     """
-    qs = db.query(models.Course).filter_by(university=university)
+    qs = db.query(models.Course)
+    if level is not None:
+        qs = qs.filter_by(level=level)
+
+    if university is not None:
+        qs = qs.filter_by(university=university)
 
     if faculty_abbrev is not None:
         qs = qs.filter_by(faculty=faculty_abbrev)

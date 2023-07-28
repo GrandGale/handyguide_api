@@ -30,7 +30,8 @@ def create_course(
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[schemas.Course])
 def get_course_list(
-    university: str,
+    level: str | None = None,
+    university: str | None = None,
     faculty: str | None = None,
     department: str | None = None,
     db: Session = Depends(get_db),
@@ -39,6 +40,7 @@ def get_course_list(
     faculty_is_valid(university=university, faculty_abbrev=faculty, db=db)
     department_is_valid(university=university, department_abbrev=department, db=db)
     return selectors.get_course_list(
+        level=level,
         university=university,
         faculty_abbrev=faculty,
         department_abbrev=department,

@@ -24,7 +24,11 @@ def course_is_valid(university: str, course_code: str | None, db: Session):
         return True
 
     # Checks if course exists in db
-    if db.query(models.Course).filter_by(university=university, code=course_code):
+    if (
+        db.query(models.Course)
+        .filter_by(university=university, code=course_code)
+        .first()
+    ):
         return True
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="Course not Found"
