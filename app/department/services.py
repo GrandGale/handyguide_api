@@ -11,6 +11,16 @@ def create_department(
     department: schemas.DepartmentCreate,
     db: Session,
 ):
+    """This function creates a new department entry in the db
+
+    Args:
+        university (str): The unievrsity abbrev
+        department (schemas.DepartmentCreate): The department obj
+        db (Session): The DB Session
+
+    Returns:
+        models.Department: The created Department obj
+    """
     validate_department(university=university, department=department, db=db)
     obj = models.Department(university=university, **department.model_dump())
     db.add(obj)

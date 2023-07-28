@@ -1,9 +1,8 @@
 from sqlalchemy import Column, ForeignKey, String, Integer, UniqueConstraint
 
+from app.config.database import DBBase
 from app.faculty.models import Faculty
 from app.university.models import University
-
-from ..config.database import DBBase
 
 
 class Department(DBBase):

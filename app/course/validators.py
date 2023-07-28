@@ -32,7 +32,7 @@ def course_is_valid(university: str, course_code: str | None, db: Session):
 
 
 def validate_course(university: str, course: schemas.CourseCreate, db: Session):
-    """This function validates a schemas.CourseCreate obj to make sure it is valid
+    """This function validates a course obj and confirms that it can be saved to the db
 
     Args:
         university (str): The university abbrev
