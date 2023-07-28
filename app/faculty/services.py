@@ -5,18 +5,15 @@ from app.faculty.validators import validate_faculty
 
 
 def create_faculty(university: str, faculty: schemas.FacultyCreate, db: Session):
-    """This function creates a faculty in the database.
+    """This function creates a faculty in the db
 
     Args:
-        db (Session): The database session.
-        faculty (schemas.FacultyCreate): The faculty to create.
-        university: the abbreviation of the university that the faculty belongs to
-
-    Raises:
-        HTTPException[409]: If the faculty already exists.
+        university (str): The university to create the faculty in
+        faculty (schemas.FacultyCreate): The faculty obj to create
+        db (Session): The DB Session
 
     Returns:
-        models.Faculty: The created faculty.
+        models.Faculty: The created faculty obj
     """
     validate_faculty(university=university, faculty=faculty, db=db)
     obj = models.Faculty(**faculty.model_dump(), university=university)
