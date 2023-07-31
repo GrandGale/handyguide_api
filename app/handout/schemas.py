@@ -13,3 +13,4 @@ class HandoutCreate(BaseHandout):
 class Handout(BaseHandout):
     id: int
     url: str
+    university: str 
