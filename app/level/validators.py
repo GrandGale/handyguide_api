@@ -17,6 +17,8 @@ def level_is_valid(level_abbrev: str, db: Session):
     Returns:
         bool[True]: If level exists in the db
     """
+    if level_abbrev == None:
+        return True
     if db.query(models.Level).filter_by(abbrev=level_abbrev).first():
         return True
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Level Not Found")
