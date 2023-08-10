@@ -9,7 +9,7 @@ class Faculty(DBBase):
     __tablename__ = "faculties"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(100))
-    abbrev = Column(String(10), index=True)
-    university = Column(String, ForeignKey(University.abbrev))
+    name = Column(String(100), nullable=False)
+    abbrev = Column(String(10), index=True, nullable=False)
+    university = Column(String, ForeignKey(University.abbrev), nullable=False)
     UniqueConstraint(name, university, name="unique_faculty")

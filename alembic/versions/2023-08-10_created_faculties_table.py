@@ -20,9 +20,9 @@ def upgrade() -> None:
     op.create_table(
         "faculties",
         sa.Column("id", sa.Integer, primary_key=True),
-        sa.Column("name", sa.String(100)),
-        sa.Column("abbrev", sa.String(10), index=True),
-        sa.Column("university", sa.String),
+        sa.Column("name", sa.String(100), nullable=False),
+        sa.Column("abbrev", sa.String(10), index=True, nullable=False),
+        sa.Column("university", sa.String, nullable=False),
         sa.ForeignKeyConstraint(
             ["university"], ["universities.abbrev"], ondelete="CASCADE"
         ),

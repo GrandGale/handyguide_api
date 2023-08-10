@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime
+from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, UniqueConstraint
 
 from app.config.database import DBBase
 from app.config.settings import settings
@@ -13,11 +13,12 @@ class Handout(DBBase):
     __tablename__ = "handouts"
 
     id = Column(Integer, primary_key=True)
-    title = Column(String(100), index=True)
-    url = Column(String, default="/")
-    upload_date = Column(DateTime, index=True, default=datetime.now())
-    university = Column(String(10), ForeignKey(University.abbrev))
-    faculty = Column(String(10), ForeignKey(Faculty.abbrev), nullable=True)
-    department = Column(String(10), ForeignKey(Department.abbrev), nullable=True)
-    course = Column(String(10), ForeignKey(Course.code))
-    session = Column(String, default=settings.SESSION)
+    title = Column(String(100), index=True, nullable=False)
+    url = Column(String, default="/", nullable=False)
+    upload_date = Column(DateTime, index=True, default=datetime.now(), nullable=False)
+    university = Column(String(10), ForeignKey(University.abbrev), nullable=False)
+    faculty = Column(String(10), ForeignKey(Faculty.abbrev), nullable=False)
+    department = Column(String(10), ForeignKey(Department.abbrev), nullable=False)
+    course = Column(String(10), ForeignKey(Course.code), nullable=False)
+    session = Column(String, default=settings.SESSION, nullable=False)
+    UniqueConstraint("title", "course", "session", name="unique_handout")
