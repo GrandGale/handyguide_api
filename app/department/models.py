@@ -6,7 +6,7 @@ from app.university.models import University
 
 
 class Department(DBBase):
-    __tablename__ = "department"
+    __tablename__ = "departments"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100))
