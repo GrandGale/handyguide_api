@@ -22,8 +22,8 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("name", sa.String(100)),
         sa.Column("abbrev", sa.String(10), index=True),
-        sa.Column("faculty", sa.String()),
-        sa.Column("university", sa.String()),
+        sa.Column("faculty", sa.String),
+        sa.Column("university", sa.String),
         sa.ForeignKeyConstraint(["faculty"], ["faculties.abbrev"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(
             ["university"], ["universities.abbrev"], ondelete="CASCADE"
