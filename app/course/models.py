@@ -9,9 +9,9 @@ from ..config.database import DBBase
 
 
 class Course(DBBase):
-    __tablename__ = "course"
+    __tablename__ = "courses"
 
-    id = Column(Integer, autoincrement=True, primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String(100))
     code = Column(String(10), index=True)
     level = Column(String(10), ForeignKey(Level.abbrev))
