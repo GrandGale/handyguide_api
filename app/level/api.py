@@ -2,11 +2,9 @@ from typing import List
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.config import database
 from app.dependencies import get_db
 from app.level import schemas, selectors, services
 
-database.DBBase.metadata.create_all(bind=database.engine)
 router = APIRouter()
 
 

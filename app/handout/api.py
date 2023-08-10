@@ -2,7 +2,6 @@ from typing import List
 from fastapi import UploadFile, status, APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.config import database
 from app.course.validators import course_is_valid
 from app.department.validators import department_is_valid
 from app.faculty.validators import faculty_is_valid
@@ -12,7 +11,6 @@ from app.handout.validators import handout_id_is_valid
 from app.level.validators import level_is_valid
 from app.university.validators import university_is_valid
 
-database.DBBase.metadata.create_all(bind=database.engine)
 router = APIRouter()
 
 
