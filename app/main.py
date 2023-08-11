@@ -5,6 +5,7 @@ from app.faculty.api import router as faculty_router
 from app.department.api import router as department_router
 from app.level.api import router as level_router
 from app.course.api import router as course_router
+from app.handout.api import router as handout_router
 
 app = FastAPI()
 
@@ -20,3 +21,4 @@ app.include_router(
     tags=["department"],
 )
 app.include_router(course_router, prefix="/university/{university}/course")
+app.include_router(handout_router, prefix="/handout")
