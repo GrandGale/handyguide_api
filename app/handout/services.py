@@ -2,7 +2,7 @@ import os
 from fastapi import status, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
-from app.handout import schemas, models, utils
+from app.handout import schemas, models, upload
 from app.handout.validators import validate_handout
 
 
@@ -25,9 +25,7 @@ def create_handout(university: str, handout: schemas.HandoutCreate, db: Session)
     return obj
 
 
-def upload_handout(id: int, file: UploadFile, db: Session):
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    MEDIA_DIR = os.path.join(BASE_DIR, f"media\\handouts\\")
+async def upload_handout(id: int, file: UploadFile, db: Session):
     """This function uploads a handout to the server
 
     Args:
@@ -42,8 +40,7 @@ def upload_handout(id: int, file: UploadFile, db: Session):
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             detail="File must be a pdf",
         )
-
-    content = file.file.read()
-    utils.save_handout(id=id, content=content, db=db)
-
-    return True
+    dir = upload.gen_path(id=id, db=db)
+    print(dir)
+    await upload.upload_handout(id=id, file=file, dir=dir, db=db)
+    return db.query(models.Handout).get(id)

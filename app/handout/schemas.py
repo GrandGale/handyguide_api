@@ -7,8 +7,8 @@ class BaseHandout(BaseModel):
 
 
 class HandoutCreate(BaseHandout):
-    pass
-
+    faculty: str = Field(description="The Faculty of the handout", max_length=10)
+    department: str = Field(description="The Department of the handout", max_length=10)
 
 class Handout(BaseHandout):
     id: int

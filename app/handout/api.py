@@ -2,6 +2,7 @@ from typing import List
 from fastapi import UploadFile, status, APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.config.settings import settings
 from app.course.validators import course_is_valid
 from app.department.validators import department_is_valid
 from app.faculty.validators import faculty_is_valid
@@ -25,10 +26,13 @@ def create_handout(
     return services.create_handout(university=university, handout=handout, db=db)
 
 
-@router.put("/{id}", status_code=status.HTTP_202_ACCEPTED)
+@router.put(
+    "/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Handout
+)
 async def upload_handout(id: int, file: UploadFile, db: Session = Depends(get_db)):
     handout_id_is_valid(id=id, db=db)
-    obj = services.upload_handout(id=id, file=file, db=db)
+    obj = await services.upload_handout(id=id, file=file, db=db)
+    obj.url = settings.AZURE_BLOB_URL + obj.url
     return obj
 
 
