@@ -1,11 +1,9 @@
 from fastapi import status, APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.config import database
 from app.dependencies import get_db
 from app.university import schemas, services, selectors
 
-database.DBBase.metadata.create_all(bind=database.engine)
 router = APIRouter()
 
 

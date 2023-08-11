@@ -2,13 +2,11 @@ from typing import List
 from fastapi import status, APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.config import database
 from app.dependencies import get_db
 from app.faculty import schemas, services, selectors
 from app.faculty.validators import faculty_is_valid
 from app.university.validators import university_is_valid
 
-database.DBBase.metadata.create_all(bind=database.engine)
 router = APIRouter()
 
 
