@@ -4,12 +4,12 @@ from sqlalchemy.orm import Session
 from app.faculty import schemas, models
 
 
-def faculty_is_valid(university: str, faculty_abbrev: str | None, db: Session):
+def faculty_is_valid(university: str, faculty_id: int | None, db: Session):
     """This function checks if the faculty exists in the db
 
     Args:
         university (str): The university abbrev
-        faculty_abbrev (str | None): The faculty abbrev
+        faculty_id (int | None): The faculty ID
         db (Session): The DB Session
 
     Raises:
@@ -18,12 +18,10 @@ def faculty_is_valid(university: str, faculty_abbrev: str | None, db: Session):
     Returns:
         bool[True]: If the faculty exists
     """
-    if faculty_abbrev == None:
+    if faculty_id == None:
         return None
     elif (
-        db.query(models.Faculty)
-        .filter_by(abbrev=faculty_abbrev, university=university)
-        .first()
+        db.query(models.Faculty).filter_by(id=faculty_id, university=university).first()
     ):
         return True
     raise HTTPException(

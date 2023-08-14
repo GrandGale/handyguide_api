@@ -31,5 +31,5 @@ def get_faculty_list(university: str, db: Session = Depends(get_db)):
 )
 def get_faculty(university: str, faculty: str, db: Session = Depends(get_db)):
     university_is_valid(university_abbrev=university, db=db)
-    faculty_is_valid(university=university, faculty_abbrev=faculty, db=db)
+    faculty_is_valid(university=university, faculty_id=faculty, db=db)
     return selectors.get_faculty(university=university, faculty=faculty, db=db)
