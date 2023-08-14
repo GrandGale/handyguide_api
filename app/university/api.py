@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import status, APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -18,7 +19,7 @@ def create_university(
 
 
 @router.get(
-    "/", status_code=status.HTTP_200_OK, response_model=list[schemas.University]
+    "/", status_code=status.HTTP_200_OK, response_model=List[schemas.University]
 )
 def get_university_list(db: Session = Depends(get_db)):
     return selectors.get_university_list(db=db)
