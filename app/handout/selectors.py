@@ -1,3 +1,4 @@
+import os
 from fastapi import status, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.config.settings import settings
@@ -32,7 +33,8 @@ def get_handout_list(
 
     elif course and university:
         qs = qs.filter_by(university=university, course=course)
-    else:
+
+    elif not university:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="You must provide a university",
@@ -40,7 +42,12 @@ def get_handout_list(
     if level:
         qs = qs.filter_by(level=level)
 
-    for obj in qs.all():
-        obj.url = f"{settings.AZURE_BLOB_URL}{obj.url}"
+    if settings.DEBUG:
+        base = os.getcwd().replace("\\", "/")
+        for obj in qs.all():
+            obj.url = f"{base}/app/media/{obj.url}.pdf"
+    else:
+        for obj in qs.all():
+            obj.url = f"{settings.AZURE_BLOB_URL}{obj.url}"
 
     return qs.all()

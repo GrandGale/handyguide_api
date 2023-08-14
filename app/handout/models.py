@@ -21,4 +21,5 @@ class Handout(DBBase):
     department = Column(String(10), ForeignKey(Department.abbrev), nullable=False)
     course = Column(String(10), ForeignKey(Course.code), nullable=False)
     session = Column(String, default=settings.SESSION, nullable=False)
-    UniqueConstraint("title", "course", "session", name="unique_handout")
+    level = Column(Integer, nullable=False)
+    UniqueConstraint("title", "course", "level", name="unique_handout")
