@@ -25,21 +25,20 @@ def upgrade() -> None:
         sa.Column("title", sa.String(100), nullable=False),
         sa.Column("url", sa.String(100), default="/", nullable=False),
         sa.Column("upload_date", sa.DateTime, default=sa.func.now(), nullable=False),
-        sa.Column("university", sa.String(100), nullable=False),
-        sa.Column("faculty", sa.String(100), nullable=False),
-        sa.Column("department", sa.String(100), nullable=False),
-        sa.Column("course", sa.String(100), nullable=False),
+        sa.Column("university", sa.String, nullable=False),
+        sa.Column("faculty", sa.Integer, nullable=False),
+        sa.Column("department", sa.Integer, nullable=False),
+        sa.Column("course", sa.Integer, nullable=False),
         sa.Column("session", sa.String(100), default=settings.SESSION, nullable=False),
+        sa.Column("level", sa.String, nullable=False),
         sa.ForeignKeyConstraint(
             ["university"], ["universities.abbrev"], ondelete="CASCADE"
         ),
-        sa.ForeignKeyConstraint(["faculty"], ["faculties.abbrev"], ondelete="CASCADE"),
-        sa.ForeignKeyConstraint(
-            ["department"], ["departments.abbrev"], ondelete="CASCADE"
-        ),
-        sa.ForeignKeyConstraint(["course"], ["courses.code"], ondelete="CASCADE"),
-        sa.ForeignKeyConstraint(["session"], ["sessions.name"], ondelete="CASCADE"),
-        sa.UniqueConstraint("title", "course", "session", name="unique_handout"),
+        sa.ForeignKeyConstraint(["faculty"], ["faculties.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(["department"], ["departments.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(["course"], ["courses.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(["level"], ["levels.abbrev"], ondelete="CASCADE"),
+        sa.UniqueConstraint("title", "course", "level", name="unique_handout"),
     )
 
 
