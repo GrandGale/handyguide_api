@@ -4,12 +4,12 @@ from sqlalchemy.orm import Session
 from app.department import schemas, models
 
 
-def department_is_valid(university: str, department_abbrev: str | None, db: Session):
+def department_is_valid(university: str, department_id: int | None, db: Session):
     """This function checks if the department exists in the db
 
     Args:
         university (str): The university abbrev
-        department_abbrev (str | None): The department abbrev
+        department_id (int | None): The department ID
         db (Session): The DB Session
 
     Raises:
@@ -18,13 +18,13 @@ def department_is_valid(university: str, department_abbrev: str | None, db: Sess
     Returns:
         bool[True]: If the department exists
     """
-    if department_abbrev == None:
+    if department_id == None:
         return True
 
     # Checks if course exists in the DB
     if (
         db.query(models.Department)
-        .filter_by(university=university, abbrev=department_abbrev)
+        .filter_by(university=university, id=department_id)
         .first()
     ):
         return True

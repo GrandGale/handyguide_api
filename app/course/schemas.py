@@ -10,19 +10,21 @@ class BaseCourse(BaseModel):
         description="Abbreviation of the faculty",
         max_length=10,
     )
-    level: str = Field(description="The level of the course", max_length=10)
+    level: str = Field(description="The level Abbrev of the course", max_length=10)
 
 
 class CourseCreate(BaseCourse):
-    department: str
-    faculty: str
+    department: int
+    faculty: int
 
 
 class Course(BaseCourse):
+    id: int
     university: str
 
 
 class CourseDetail(BaseCourse):
-    department: str
-    faculty: str
+    id: int
+    department: int
+    faculty: int
     university: str

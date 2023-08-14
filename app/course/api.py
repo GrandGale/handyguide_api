@@ -19,10 +19,8 @@ def create_course(
     db: Session = Depends(get_db),
 ):
     university_is_valid(university_abbrev=university, db=db)
-    faculty_is_valid(university=university, faculty_abbrev=course.faculty, db=db)
-    department_is_valid(
-        university=university, department_abbrev=course.department, db=db
-    )
+    faculty_is_valid(university=university, faculty_id=course.faculty, db=db)
+    department_is_valid(university=university, department_id=course.department, db=db)
     return services.create_course(university=university, course=course, db=db)
 
 
@@ -30,13 +28,13 @@ def create_course(
 def get_course_list(
     level: str | None = None,
     university: str | None = None,
-    faculty: str | None = None,
-    department: str | None = None,
+    faculty: int | None = None,
+    department: int | None = None,
     db: Session = Depends(get_db),
 ):
     university_is_valid(university_abbrev=university, db=db)
-    faculty_is_valid(university=university, faculty_abbrev=faculty, db=db)
-    department_is_valid(university=university, department_abbrev=department, db=db)
+    faculty_is_valid(university=university, faculty_id=faculty, db=db)
+    department_is_valid(university=university, department_id=department, db=db)
     return selectors.get_course_list(
         level=level,
         university=university,

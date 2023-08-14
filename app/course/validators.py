@@ -6,12 +6,12 @@ from sqlalchemy.orm import Session
 from app.course import models, schemas
 
 
-def course_is_valid(university: str, course_code: str | None, db: Session):
+def course_is_valid(university: str, course_id: int | None, db: Session):
     """This function checks if the course is a valid course in the DB
 
     Args:
         university (str): The university the course belongs to
-        course_code (str | None): The course code
+        course_id (str | None): The course ID
         db (Session): The DB Session created
 
     Raises:
@@ -20,15 +20,11 @@ def course_is_valid(university: str, course_code: str | None, db: Session):
     Returns:
         bool[True]: if the course is valid
     """
-    if course_code == None:
+    if course_id == None:
         return True
 
     # Checks if course exists in db
-    if (
-        db.query(models.Course)
-        .filter_by(university=university, code=course_code)
-        .first()
-    ):
+    if db.query(models.Course).filter_by(university=university, id=course_id).first():
         return True
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="Course not Found"

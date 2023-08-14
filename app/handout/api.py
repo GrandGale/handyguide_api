@@ -1,3 +1,4 @@
+import os
 from typing import List
 from fastapi import UploadFile, status, APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -22,7 +23,7 @@ def create_handout(
     db: Session = Depends(get_db),
 ):
     university_is_valid(university_abbrev=university, db=db)
-    course_is_valid(university=university, course_code=handout.course, db=db)
+    course_is_valid(university=university, course_id=handout.course, db=db)
     return services.create_handout(university=university, handout=handout, db=db)
 
 
@@ -32,24 +33,23 @@ def create_handout(
 async def upload_handout(id: int, file: UploadFile, db: Session = Depends(get_db)):
     handout_id_is_valid(id=id, db=db)
     obj = await services.upload_handout(id=id, file=file, db=db)
-    obj.url = settings.AZURE_BLOB_URL + obj.url
     return obj
 
 
 @router.get("/", response_model=List[schemas.Handout])
 def get_handout_list(
     university: str | None = None,
-    faculty: str | None = None,
-    department: str | None = None,
-    course: str | None = None,
+    faculty: int | None = None,
+    department: int | None = None,
+    course: int | None = None,
     search: str | None = None,
     level: str | None = None,
     db: Session = Depends(get_db),
 ):
     university_is_valid(university_abbrev=university, db=db)
-    faculty_is_valid(university=university, faculty_abbrev=faculty, db=db)
-    department_is_valid(university=university, department_abbrev=department, db=db)
-    course_is_valid(university=university, course_code=course, db=db)
+    faculty_is_valid(university=university, faculty_id=faculty, db=db)
+    department_is_valid(university=university, department_id=department, db=db)
+    course_is_valid(university=university, course_id=course, db=db)
     level_is_valid(level_abbrev=level, db=db)
     return selectors.get_handout_list(
         university=university,

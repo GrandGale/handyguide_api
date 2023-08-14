@@ -17,4 +17,5 @@ class FacultyCreate(FacultyBase):
 
 
 class Faculty(FacultyBase):
+    id: int
     university: str

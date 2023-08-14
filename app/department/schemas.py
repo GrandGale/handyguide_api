@@ -13,9 +13,10 @@ class DepartmentBase(BaseModel):
 
 
 class DepartmentCreate(DepartmentBase):
-    faculty: str
+    faculty: int
 
 
 class Department(DepartmentBase):
+    id: int
     university: str
-    faculty: str
+    faculty: int
