@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from app.config.settings import settings
 
 engine = create_engine(
-    settings.SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    url=settings.POSTGRES_URL,
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
