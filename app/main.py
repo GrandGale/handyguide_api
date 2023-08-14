@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.config.settings import settings
 from app.university.api import router as university_router
 from app.faculty.api import router as faculty_router
 from app.department.api import router as department_router
@@ -7,7 +8,7 @@ from app.level.api import router as level_router
 from app.course.api import router as course_router
 from app.handout.api import router as handout_router
 
-app = FastAPI()
+app = FastAPI(openapi_url=settings.OPENAPI_URL)
 
 
 app.include_router(university_router, prefix="/university", tags=["university"])

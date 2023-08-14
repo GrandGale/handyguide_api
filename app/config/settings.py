@@ -11,6 +11,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, "media/")
 class Settings(BaseSettings):
     DEBUG: bool = os.environ.get("DEBUG")
     SESSION: str = os.environ.get("SESSION")
+    OPENAPI_URL: str = os.environ.get("OPENAPI_URL")
 
     # DB Settings
     POSTGRES_USER: str = os.environ.get("PGUSER")
