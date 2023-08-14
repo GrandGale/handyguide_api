@@ -13,11 +13,11 @@ class Settings(BaseSettings):
     SESSION: str = os.environ.get("SESSION")
 
     # DB Settings
-    POSTGRES_USER: str = os.environ.get("POSTGRES_USER")
-    POSTGRES_PASSWORD: str = os.environ.get("POSTGRES_PASSWORD")
-    POSTGRES_SERVER: str = os.environ.get("POSTGRES_SERVER")
-    POSTGRES_PORT: int = os.environ.get("POSTGRES_PORT")
-    POSTGRES_DB: str = os.environ.get("POSTGRES_DB")
+    POSTGRES_USER: str = os.environ.get("PGUSER")
+    POSTGRES_PASSWORD: str = os.environ.get("PGPASSWORD")
+    POSTGRES_SERVER: str = os.environ.get("PGHOST")
+    POSTGRES_PORT: int = os.environ.get("PGPORT")
+    POSTGRES_DB: str = os.environ.get("PGDATABASE")
 
     # Azure Settings
     AZURE_STORAGE_ACCOUNT_NAME: str = os.environ.get("AZURE_STORAGE_ACCOUNT_NAME")
