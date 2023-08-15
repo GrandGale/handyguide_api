@@ -8,7 +8,7 @@ def level_is_valid(level_abbrev: str, db: Session):
     """This function checks if the level exists in the db
 
     Args:
-        level (str): The level abbrev
+        level_abbrev (str): The level abbrev
         db (Session): The DB Session
 
     Raises:
