@@ -29,12 +29,12 @@ def upgrade() -> None:
         sa.Column("level", sa.String(10), nullable=False),
         sa.Column("faculty", sa.Integer, nullable=False),
         sa.Column("department", sa.Integer, nullable=False),
-        sa.Column("password", sa.String(50), nullable=False),
+        sa.Column("password", sa.String, nullable=False),
         sa.Column("is_active", sa.Boolean, nullable=False, default=True),
         sa.Column("is_contributor", sa.Boolean, nullable=False, default=False),
         sa.Column("is_supervisor", sa.Boolean, nullable=False, default=False),
         sa.Column("is_admin", sa.Boolean, nullable=False, default=False),
-        sa.Column("last_login", sa.DateTime, nullable=False),
+        sa.Column("last_login", sa.DateTime),
         sa.Column("created_at", sa.DateTime, nullable=False, default=sa.func.now()),
         sa.ForeignKeyConstraint(
             ["university"], ["universities.abbrev"], ondelete="CASCADE"
