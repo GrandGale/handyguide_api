@@ -58,3 +58,8 @@ def get_handout_list(
         level=level,
         db=db,
     )
+
+
+@router.get("/search/", response_model=List[schemas.Handout])
+def handout_search(q: str, db: Session = Depends(get_db)):
+    return selectors.handout_search(q=q, db=db)
