@@ -42,7 +42,6 @@ def get_handout_list(
     faculty: int | None = None,
     department: int | None = None,
     course: int | None = None,
-    search: str | None = None,
     level: str | None = None,
     db: Session = Depends(get_db),
 ):
@@ -56,7 +55,6 @@ def get_handout_list(
         faculty=faculty,
         department=department,
         course=course,
-        search=search,
         level=level,
         db=db,
     )
