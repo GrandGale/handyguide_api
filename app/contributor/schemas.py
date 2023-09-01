@@ -21,6 +21,16 @@ class ContributorCreate(BaseContributor):
     password: str
 
 
+class ContributorLogin(BaseModel):
+    email: str = Field(description="The Contributor's email")
+    password: str = Field(description="The Contributor's password")
+
+
+class Token(BaseModel):
+    access_token: str = Field(description="The JWT access token")
+    token_type: str = Field(description="The JWT token type")
+
+
 class Contributor(BaseContributor):
     is_contributor: bool
     is_supervisor: bool

@@ -28,3 +28,14 @@ def create_contributor(
         university=contributor.university, department_id=contributor.department, db=db
     )
     return services.create_contributor(contributor=contributor, db=db)
+
+
+@router.post(
+    "/login",
+    status_code=status.HTTP_200_OK,
+    response_model=schemas.Token,
+)
+def login_contributor(
+    contributor: schemas.ContributorLogin, db: Session = Depends(get_db)
+):
+    return services.login_contributor(contributor=contributor, db=db)
