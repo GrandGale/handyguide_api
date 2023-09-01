@@ -1,5 +1,7 @@
-from jose import JWTError, jwt
+from jose import jwt
 from passlib.context import CryptContext
+
+from app.config.settings import settings
 
 
 def hash_password(raw: str) -> str:
@@ -13,3 +15,29 @@ def hash_password(raw: str) -> str:
     """
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     return pwd_context.hash(raw)
+
+
+def verify_password(raw: str, hashed: str):
+    """This function verifies a password
+
+    Args:
+        raw (str): The plain password
+        hashed (str): The hashed password
+
+    Returns:
+        bool: True if the password is correct, False otherwise
+    """
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    return pwd_context.verify(raw, hashed)
+
+
+def create_access_token(data: dict):
+    """This function creates a JWT token
+
+    Args:
+        data (dict): The data to be encoded
+
+    Returns:
+        str: The JWT token
+    """
+    return jwt.encode(data, settings.SECRET_KEY, algorithm=settings.HASHING_ALGORITHM)
