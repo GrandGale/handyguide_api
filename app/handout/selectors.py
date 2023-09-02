@@ -1,10 +1,10 @@
 import os
-from fastapi import status, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.config.settings import settings
 from app.handout import models
 from app.course import models as course_models
+from app.utils.paginators import paginate
 
 
 def get_handout_list(
@@ -13,6 +13,8 @@ def get_handout_list(
     department: int | None,
     course: int | None,
     level: str | None,
+    page: int,
+    size: int,
     db: Session,
 ):
     qs = db.query(models.Handout)
@@ -35,10 +37,10 @@ def get_handout_list(
         for obj in qs.all():
             obj.url = f"{settings.AZURE_BLOB_URL}{obj.url}"
 
-    return qs.all()
+    return paginate(qs=qs, page=page, size=size)
 
 
-def handout_search(q: str, db: Session):
+def handout_search(q: str, university: str | None, page: int, size: int, db: Session):
     handouts = []
     courses_qs = db.query(course_models.Course).filter(
         (course_models.Course.name.ilike(f"%{q}%"))
@@ -48,9 +50,8 @@ def handout_search(q: str, db: Session):
         for course in courses_qs.all():
             handouts.extend(db.query(models.Handout).filter_by(course=course.id).all())
 
-    handouts_qs = (
-        db.query(models.Handout).filter(models.Handout.title.ilike(f"%{q}%")).all()
-    )
-    handouts.extend([handout for handout in handouts_qs if handout not in handouts])
+    handouts = db.query(models.Handout).filter(models.Handout.title.ilike(f"%{q}%"))
+    if university:
+        handouts = handouts.filter_by(university=university)
 
-    return handouts
+    return paginate(qs=handouts, page=page, size=size)

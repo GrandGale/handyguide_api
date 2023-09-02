@@ -1,9 +1,6 @@
-import os
-from typing import List
-from fastapi import UploadFile, status, APIRouter, Depends
+from fastapi import Query, UploadFile, status, APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.config.settings import settings
 from app.course.validators import course_is_valid
 from app.department.validators import department_is_valid
 from app.faculty.validators import faculty_is_valid
@@ -36,13 +33,17 @@ async def upload_handout(id: int, file: UploadFile, db: Session = Depends(get_db
     return obj
 
 
-@router.get("/", response_model=List[schemas.Handout])
+@router.get(
+    "/", status_code=status.HTTP_200_OK, response_model=schemas.PaginatedHandout
+)
 def get_handout_list(
     university: str | None = None,
     faculty: int | None = None,
     department: int | None = None,
     course: int | None = None,
     level: str | None = None,
+    page: int = Query(1, ge=1),
+    size: int = Query(10, ge=1, le=50),
     db: Session = Depends(get_db),
 ):
     university_is_valid(university_abbrev=university, db=db)
@@ -56,10 +57,23 @@ def get_handout_list(
         department=department,
         course=course,
         level=level,
+        page=page,
+        size=size,
         db=db,
     )
 
 
-@router.get("/search/", response_model=List[schemas.Handout])
-def handout_search(q: str, db: Session = Depends(get_db)):
-    return selectors.handout_search(q=q, db=db)
+@router.get(
+    "/search/", status_code=status.HTTP_200_OK, response_model=schemas.PaginatedHandout
+)
+def handout_search(
+    q: str,
+    university: str | None = None,
+    page: int = Query(1, ge=1),
+    size: int = Query(10, le=50),
+    db: Session = Depends(get_db),
+):
+    university_is_valid(university_abbrev=university, db=db)
+    return selectors.handout_search(
+        q=q, university=university, page=page, size=size, db=db
+    )
