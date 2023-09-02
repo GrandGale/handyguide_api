@@ -23,5 +23,5 @@ app.include_router(
     prefix="/university/{university}/department",
     tags=["department"],
 )
-app.include_router(course_router, prefix="/university/{university}/course")
-app.include_router(handout_router, prefix="/handout")
+app.include_router(course_router, prefix="/university/{university}/course", tags=["university"])
+app.include_router(handout_router, prefix="/handout", tags=["handout"])
