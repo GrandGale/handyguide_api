@@ -3,15 +3,22 @@ from fastapi import status, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 from app.config.settings import settings
+from app.contributor import models as contributor_models
 from app.handout import schemas, models, upload
 from app.handout.validators import validate_handout
 
 
-def create_handout(university: str, handout: schemas.HandoutCreate, db: Session):
+def create_handout(
+    university: str,
+    handout: schemas.HandoutCreate,
+    contributor: contributor_models.Contributor,
+    db: Session,
+):
     """This function creates a handout and saves it to the db
 
     Args:
         handout (schemas.HandoutCreate): The HandoutCreate schema obj
+        contributor (contributor_models.Contributor): The Contributor
         university (str): The university abbrev
         db (Session, optional): The DB Session
 
@@ -19,7 +26,9 @@ def create_handout(university: str, handout: schemas.HandoutCreate, db: Session)
         schemas.Handout: The Handout schema obj
     """
     validate_handout(university=university, handout=handout, db=db)
-    obj = models.Handout(university=university, **handout.model_dump())
+    obj = models.Handout(
+        university=university, contributor=contributor.id, **handout.model_dump()
+    )
     db.add(obj)
     db.commit()
     db.refresh(obj)

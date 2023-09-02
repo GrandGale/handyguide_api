@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, UniqueCons
 
 from app.config.database import DBBase
 from app.config.settings import settings
+from app.contributor.models import Contributor
 from app.course.models import Course
 from app.department.models import Department
 from app.faculty.models import Faculty
@@ -22,4 +23,5 @@ class Handout(DBBase):
     course = Column(String(10), ForeignKey(Course.code), nullable=False)
     session = Column(String, default=settings.SESSION, nullable=False)
     level = Column(Integer, nullable=False)
+    contributor = Column(Integer, ForeignKey(Contributor.id), nullable=False)
     UniqueConstraint("title", "course", "level", name="unique_handout")
