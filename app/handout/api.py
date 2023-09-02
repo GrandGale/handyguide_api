@@ -9,6 +9,8 @@ from app.dependencies import get_db
 from app.handout.validators import handout_id_is_valid
 from app.level.validators import level_is_valid
 from app.university.validators import university_is_valid
+from app.contributor import dependencies as contributor_dependencies
+from app.contributor import models as contributor_models
 
 router = APIRouter()
 
@@ -17,11 +19,16 @@ router = APIRouter()
 def create_handout(
     university: str,
     handout: schemas.HandoutCreate,
+    contributor: contributor_models.Contributor = Depends(
+        contributor_dependencies.get_current_contributor
+    ),
     db: Session = Depends(get_db),
 ):
     university_is_valid(university_abbrev=university, db=db)
     course_is_valid(university=university, course_id=handout.course, db=db)
-    return services.create_handout(university=university, handout=handout, db=db)
+    return services.create_handout(
+        university=university, handout=handout, contributor=contributor, db=db
+    )
 
 
 @router.put(
