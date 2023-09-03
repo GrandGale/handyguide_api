@@ -1,8 +1,10 @@
 from typing import List
-from fastapi import status, APIRouter, Depends
+from fastapi import status, HTTPException, status, APIRouter, Depends
 from sqlalchemy.orm import Session
+from app.contributor.dependencies import get_current_contributor
 
 from app.dependencies import get_db
+from app.contributor import models as contributor_models
 from app.faculty import schemas, services, selectors
 from app.faculty.validators import faculty_is_valid
 from app.university.validators import university_is_valid
@@ -29,7 +31,30 @@ def get_faculty_list(university: str, db: Session = Depends(get_db)):
 @router.get(
     "/{faculty}", status_code=status.HTTP_200_OK, response_model=schemas.Faculty
 )
-def get_faculty(university: str, faculty: str, db: Session = Depends(get_db)):
+def get_faculty(university: str, faculty: int, db: Session = Depends(get_db)):
     university_is_valid(university_abbrev=university, db=db)
     faculty_is_valid(university=university, faculty_id=faculty, db=db)
     return selectors.get_faculty(university=university, faculty=faculty, db=db)
+
+
+@router.put(
+    "/{faculty}/edit",
+    status_code=status.HTTP_200_OK,
+    response_model=schemas.Faculty,
+)
+def edit_faculty(
+    faculty: str,
+    university: str,
+    update: schemas.FacultyUpdate,
+    contributor: contributor_models.Contributor = Depends(get_current_contributor),
+    db: Session = Depends(get_db),
+):
+    if contributor.is_supervisor or contributor.is_admin:
+        university_is_valid(university_abbrev=university, db=db)
+        return services.edit_faculty(
+            university=university, faculty_abbrev=faculty, update=update, db=db
+        )
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="You do not have permission to edit this faculty",
+    )

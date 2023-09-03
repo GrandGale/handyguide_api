@@ -12,6 +12,11 @@ class FacultyBase(BaseModel):
     )
 
 
+class FacultyUpdate(BaseModel):
+    name: str | None = None
+    abbrev: str | None = None
+
+
 class FacultyCreate(FacultyBase):
     pass
 
