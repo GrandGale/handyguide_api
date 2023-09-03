@@ -12,6 +12,11 @@ class DepartmentBase(BaseModel):
     )
 
 
+class DepartmentUpdate(BaseModel):
+    name: str | None = None
+    abbrev: str | None = None
+
+
 class DepartmentCreate(DepartmentBase):
     faculty: int
 

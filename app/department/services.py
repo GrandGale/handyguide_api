@@ -1,8 +1,7 @@
-from fastapi import Depends
+from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 
-from app.dependencies import get_db
-from app.department import schemas, models
+from app.department import schemas, selectors, models
 from app.department.validators import validate_department
 
 
@@ -27,3 +26,43 @@ def create_department(
     db.commit()
     db.refresh(obj)
     return obj
+
+
+def edit_department(
+    university: str,
+    department_abbrev: str,
+    update: schemas.DepartmentUpdate,
+    db: Session,
+):
+    """This function edits a department entry in the db
+
+    Args:
+        university (str): The university abbrev
+        department_abbrev (str): The department abbrev
+        update (schemas.DepartmentUpdate): The update obj
+        db (Session): The DB Session
+
+    Returns:
+        models.Department: The updated Department obj
+    """
+    department = selectors.get_department(
+        university=university, department_abbrev=department_abbrev, db=db
+    )
+    if department:
+        try:
+            validate_department(university=university, department=update, db=db)
+        except Exception:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Department with details already exists",
+            )
+        for field, value in update.model_dump().items():
+            if value is not None:
+                setattr(department, field, value)
+        db.add(department)
+        db.commit()
+        db.refresh(department)
+        return department
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND, detail="Department not found"
+    )
