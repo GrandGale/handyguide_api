@@ -9,7 +9,7 @@ from app.level.api import router as level_router
 from app.course.api import router as course_router
 from app.handout.api import router as handout_router
 
-app = FastAPI(openapi_url="/")
+app = FastAPI(docs_url="/")
 
 
 app.include_router(contributor_router, prefix="/contributor", tags=["contributor"])
