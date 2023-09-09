@@ -53,5 +53,8 @@ def handout_search(q: str, university: str | None, page: int, size: int, db: Ses
     handouts = db.query(models.Handout).filter(models.Handout.title.ilike(f"%{q}%"))
     if university:
         handouts = handouts.filter_by(university=university)
+    
+    for obj in handouts.all():
+            obj.url = f"{settings.AZURE_BLOB_URL}{obj.url}"
 
     return paginate(qs=handouts, page=page, size=size)
